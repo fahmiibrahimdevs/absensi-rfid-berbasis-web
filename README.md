@@ -1,97 +1,108 @@
 ![image](https://github.com/user-attachments/assets/a05a8e03-62f0-45ae-a6b1-115b3000d91b)
 
-# Livewire Stisla
+![preview](public/build/assets/preview.png)
 
-Project Laravel 11 dengan Livewire 3, Template Admin Stisla, dan Multi Auth menggunakan Laratrust serta Aktif/Non-aktif akun. Have Fun ^_^
+# Absensi RFID Berbasis Web
 
-## Prerequisites
+Aplikasi absensi berbasis web menggunakan Laravel + Livewire yang terintegrasi dengan pembaca RFID melalui MQTT.
 
-Before you begin, ensure you have the following installed:
+Fitur utama:
 
-- [PHP](https://www.php.net/) (version 8.0 or higher)
-- [Composer](https://getcomposer.org/) (for managing dependencies)
-- [MySQL](https://www.mysql.com/) or any other database supported by Laravel
-- [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) (for handling frontend and assets)
-  
-## Installation Steps
+-   Manajemen Mahasiswa dan Kelas
+-   Pencatatan Absensi (terima data dari pembaca RFID via MQTT)
+-   Integrasi MQTT yang dikonfigurasi lewat database (tabel `mqtt`)
+-   Tampilan admin menggunakan template Stisla dan Livewire
 
-Follow these steps to get your project up and running.
+## Prasyarat
 
-### 1. Clone the Repository
+-   PHP 8.0+
+-   Composer
+-   MySQL / MariaDB
+-   Node.js & npm
 
-Clone the repository to your local machine:
+## Setup cepat (development)
+
+1. Clone repository
 
 ```bash
-git clone https://github.com/fahmiibrahimdevs/livewire-stisla.git
+git clone https://github.com/fahmiibrahimdevs/absensi-rfid-berbasis-web.git
+cd absensi-rfid-berbasis-web
 ```
 
-### 2. Install PHP Dependencies
-
-After cloning the repository, navigate to the project directory and install the PHP dependencies using Composer:
+2. Install dependency PHP
 
 ```bash
-cd livewire-stisla
 composer install
 ```
 
-### 3. Configure .env File
-
-Copy the `.env.example` file to `.env`:
+3. Salin file environment dan sesuaikan
 
 ```bash
 cp .env.example .env
+# edit .env: DB_*, APP_URL, dsb
 ```
 
-Then, open the `.env` file and update the database connection and other environment variables based on your local configuration.
-
-### 4. Generate Application Key
-
-Run the following command to generate the application key:
+4. Generate app key
 
 ```bash
 php artisan key:generate
 ```
 
-### 5. Run Database Migrations Fresh + Seed
-
-Run the migration command to create the necessary database tables:
+5. Jalankan migrasi dan seeder
 
 ```bash
-php artisan migrate:fresh --seed
+php artisan migrate --seed
 ```
 
-### 6. Install Frontend Dependencies
-
-Install the frontend dependencies using npm:
+6. Install dan build frontend
 
 ```bash
 npm install
-```
-
-### 7. Build Frontend Assets
-
-Once the frontend dependencies are installed, run the following command to build the assets:
-
-```bash
 npm run dev
 ```
 
-If you want to build assets for production, use:
-
-```bash
-npm run prod
-```
-
-### 8. Run the Application
-
-Your application is now ready to run. To start the Laravel development server, use:
+7. Jalankan server
 
 ```bash
 php artisan serve
 ```
 
-The application will be available at `http://localhost:8000`.
+8. Buka `http://localhost:8000`
 
-### License
+## Pengaturan MQTT
 
-This project is licensed under the [MIT License](https://github.com/fahmiibrahimdevs/livewire-stisla/blob/main/LICENSE).
+-   Aplikasi mengambil konfigurasi MQTT dari tabel `mqtt`.
+-   Pastikan tabel `mqtt` berisi setidaknya satu baris yang memiliki kolom: `host`, `port`, `username`, `password`.
+-   Jika kosong, frontend tidak akan melakukan koneksi MQTT.
+
+Contoh baris minimal pada tabel `mqtt`:
+
+```text
+id | host         | port | username | password
+1  | 202.10.34.27 | 9001 | user     | secret
+```
+
+## Catatan teknis
+
+-   Komponen Livewire `app/Livewire/MasterData/Mahasiswa.php` dan `Absensi.php` memuat konfigurasi MQTT dari DB pada `mount()` dan mengeksposnya ke view.
+-   View `resources/views/livewire/master-data/*.blade.php` memasukkan nilai tersebut ke JS dengan `@json($mqtt_host)`.
+-   JS menggunakan Paho MQTT client (`mqttws31.min.js`) untuk koneksi WebSocket ke broker MQTT.
+
+## Troubleshooting
+
+-   Tidak bisa terhubung ke broker MQTT? Periksa:
+
+    -   Nilai `host`/`port` di tabel `mqtt`.
+    -   Broker menerima koneksi WebSocket (bukan hanya MQTT/TCP).
+    -   Kredensial username/password.
+
+-   Periksa log Laravel: `storage/logs/laravel.log`.
+
+## Ingin saya tambahkan?
+
+-   Saya bisa tambahkan validasi/pengecekan di JS agar tidak mencoba connect bila konfigurasi kosong, dan menampilkan pesan di UI.
+-   Saya juga bisa menambahkan halaman admin untuk mengedit konfigurasi MQTT.
+
+## Lisensi
+
+MIT

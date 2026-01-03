@@ -183,16 +183,16 @@
 
     function startConnect() {
         clientID = "client_ind" + parseInt(Math.random() * 100);
-        host = "152.42.199.74";
-        port = "9001";
+        host = @json($mqtt_host);
+        port = @json($mqtt_port);
         client = new Paho.MQTT.Client(host, Number(port), clientID);
         client.onConnectionLost = onConnectionLost;
         client.onMessageArrived = onMessageArrived;
 
         client.connect({
             onSuccess: onConnect,
-            userName: 'faluk',
-            password: '31750321'
+            userName: @json($mqtt_username),
+            password: @json($mqtt_password)
         });
 
     }

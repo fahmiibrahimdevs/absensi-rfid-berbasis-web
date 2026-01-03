@@ -4,6 +4,7 @@ namespace App\Livewire\MasterData;
 
 use App\Models\Absensi as ModelsAbsensi;
 use Livewire\Component;
+use App\Models\Mqtt;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
 
@@ -34,6 +35,10 @@ class Absensi extends Component
     public $dataId;
 
     public $uid_card, $id_mahasiswa, $tanggal, $waktu, $status, $keterangan;
+    public $mqtt_host = '';
+    public $mqtt_port = '';
+    public $mqtt_username = '';
+    public $mqtt_password = '';
 
     public function mount()
     {
@@ -43,6 +48,13 @@ class Absensi extends Component
         $this->waktu               = '';
         $this->status              = 'opsi1';
         $this->keterangan          = '';
+        $mqtt = Mqtt::first();
+        if ($mqtt) {
+            $this->mqtt_host = $mqtt->host ?? '';
+            $this->mqtt_port = $mqtt->port ?? '';
+            $this->mqtt_username = $mqtt->username ?? '';
+            $this->mqtt_password = $mqtt->password ?? '';
+        }
     }
 
     public function load()

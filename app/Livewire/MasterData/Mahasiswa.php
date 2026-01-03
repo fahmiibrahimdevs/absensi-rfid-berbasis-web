@@ -3,6 +3,7 @@
 namespace App\Livewire\MasterData;
 
 use App\Models\Kelas;
+use App\Models\Mqtt;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
@@ -33,6 +34,10 @@ class Mahasiswa extends Component
 
     public $uid_card, $id_kelas, $nim, $nama_mahasiswa, $jenis_kelamin;
     public $kelases;
+    public $mqtt_host = '';
+    public $mqtt_port = '';
+    public $mqtt_username = '';
+    public $mqtt_password = '';
 
     public function mount()
     {
@@ -42,6 +47,13 @@ class Mahasiswa extends Component
         $this->nim                 = '240332107';
         $this->nama_mahasiswa      = 'Fahmi Ibra';
         $this->jenis_kelamin       = '-';
+        $mqtt = Mqtt::first();
+        if ($mqtt) {
+            $this->mqtt_host = $mqtt->host ?? '';
+            $this->mqtt_port = $mqtt->port ?? '';
+            $this->mqtt_username = $mqtt->username ?? '';
+            $this->mqtt_password = $mqtt->password ?? '';
+        }
     }
 
     public function render()
