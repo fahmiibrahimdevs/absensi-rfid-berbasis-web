@@ -1,6 +1,4 @@
-![image](https://github.com/user-attachments/assets/a05a8e03-62f0-45ae-a6b1-115b3000d91b)
-
-![preview](public/build/assets/preview.png)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6de29480-ce70-4a2e-8ed5-9d809f2b431f" />
 
 # Absensi RFID Berbasis Web
 
@@ -79,7 +77,7 @@ Contoh baris minimal pada tabel `mqtt`:
 
 ```text
 id | host         | port | username | password
-1  | 202.10.34.27 | 9001 | user     | secret
+1  | xxx.xx.xx.xx | 9001 | user     | secret
 ```
 
 ## Catatan teknis
@@ -97,11 +95,6 @@ id | host         | port | username | password
     -   Kredensial username/password.
 
 -   Periksa log Laravel: `storage/logs/laravel.log`.
-
-## Ingin saya tambahkan?
-
--   Saya bisa tambahkan validasi/pengecekan di JS agar tidak mencoba connect bila konfigurasi kosong, dan menampilkan pesan di UI.
--   Saya juga bisa menambahkan halaman admin untuk mengedit konfigurasi MQTT.
 
 ## Lisensi
 
